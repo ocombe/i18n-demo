@@ -1,10 +1,19 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import {APP_BASE_HREF} from "@angular/common";
+import {LOCALE_ID, NgModule} from "@angular/core";
+import {FormsModule} from "@angular/forms";
+import {HttpModule} from "@angular/http";
+import {BrowserModule} from "@angular/platform-browser";
+import {getLang} from "../i18n-providers";
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import {AppRoutingModule} from "./app-routing.module";
+import {AppComponent} from "./app.component";
+
+export function appBaseHrefProvider(locale: string) {
+  locale = locale.match(/^(en|fr)$/) ? locale : getLang();
+  document.querySelector('base').href = `/${locale}`;
+  return `/${locale}`;
+}
+
 
 @NgModule({
   declarations: [
@@ -16,7 +25,10 @@ import { AppComponent } from './app.component';
     HttpModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [
+    {provide: APP_BASE_HREF, useFactory: appBaseHrefProvider, deps: [LOCALE_ID]}
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
