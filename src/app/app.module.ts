@@ -8,6 +8,12 @@ import {getLang} from "../i18n-providers";
 import {AppRoutingModule} from "./app-routing.module";
 import {AppComponent} from "./app.component";
 
+/**
+ * Sets the app base href based on the current locale
+ * and updates the DOM tag accordingly
+ * @param locale
+ * @returns {string}
+ */
 export function appBaseHrefProvider(locale: string) {
   locale = locale.match(/^(en|fr)$/) ? locale : getLang();
   document.querySelector('base').href = `/${locale}`;

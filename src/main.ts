@@ -9,6 +9,8 @@ if (environment.production) {
   enableProdMode();
 }
 
+// we assume that environment.production means that we are using AOT
+// you can define your own env parameters in /src/environments
 getTranslationProviders(environment.production).then((providers: CompilerOptions[]) => {
   const options = { providers };
   platformBrowserDynamic().bootstrapModule(AppModule, options);

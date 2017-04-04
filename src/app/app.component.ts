@@ -20,6 +20,11 @@ export class AppComponent {
     this.lang = localeId.match(/^(en|fr)$/) ? localeId : getLang();
   }
 
+  /**
+   * We reload the application with a different base path
+   * when the lang changes
+   * @param lang
+   */
   onLangChange(lang: string) {
     window.location.href = `/${lang}/`;
   }

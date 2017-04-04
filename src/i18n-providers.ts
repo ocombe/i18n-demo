@@ -1,9 +1,15 @@
 import {APP_BASE_HREF} from "@angular/common";
 import {CompilerOptions, LOCALE_ID, TRANSLATIONS, TRANSLATIONS_FORMAT} from "@angular/core";
 
-export function getLang(): string {
+/**
+ * Returns the current lang for the application
+ * using the existing base path
+ * or the browser lang if there is no base path
+ * @returns {string}
+ */
+export function getLang(): string | null {
   if(typeof window === 'undefined' || typeof window.navigator === 'undefined') {
-    return undefined;
+    return null;
   }
 
   const basePath = window.location.pathname.replace('/', '').split('/');
@@ -24,8 +30,14 @@ export function getLang(): string {
   return lang.match(/^(en|fr)$/) ? lang : 'en';
 }
 
-export function getTranslationProviders(isProd): Promise<CompilerOptions[]> {
-  if(isProd) {
+/**
+ * Lazy-load the translations in JIT
+ * or does nothing in AOT
+ * @param isAot a parameter to know if the app is using AOT or not
+ * @returns {any}
+ */
+export function getTranslationProviders(isAot: boolean): Promise<CompilerOptions[]> {
+  if(isAot) {
     return Promise.resolve([]);
   }
   const locale = getLang();
